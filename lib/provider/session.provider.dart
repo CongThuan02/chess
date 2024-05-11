@@ -3,7 +3,7 @@ import 'package:fe/app/data_fake/user_data.dart';
 import 'package:fe/model/user.model.dart';
 import 'package:http/http.dart' as http;
 
-String backendURL = "http://localhost:8080/";
+String backendURL = "http://127.0.0.1:8080";
 
 class SessionProvider {
   SessionProvider._();
@@ -22,7 +22,7 @@ class SessionProvider {
       "password": password,
     };
     UserModel? userModel;
-    var authenticatorApi = Uri.parse("https://daotaodaihoc.humg.edu.vn/api/auth/login");
+    var authenticatorApi = Uri.parse("https://my-api.humg.edu.vn/api/auth/login");
     var headers = {
       "Content-Type": "application/x-www-form-urlencoded",
       "Authorization": "Bearer ${base64Encode(utf8.encode('your_client_id:your_client_secret'))}",

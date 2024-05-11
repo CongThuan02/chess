@@ -28,7 +28,7 @@ class ChatPage extends StatelessWidget {
           children: [
             Expanded(
               child: Container(
-                decoration: BoxDecoration(color: Color.fromARGB(255, 215, 247, 255)),
+                decoration: const BoxDecoration(color: Color.fromARGB(255, 215, 247, 255)),
                 child: BlocBuilder<ListChatCubit, ListLoadState<MessageModel>>(buildWhen: (previous, current) {
                   return previous.status != current.status || previous.list.length != current.list.length;
                 }, builder: (context, state) {
@@ -42,7 +42,7 @@ class ChatPage extends StatelessWidget {
                             var message = listMess[index];
                             if (message.createUserId == idUser) {
                               return OwnMessage(
-                                bloc:context.read<ListChatCubit>(),
+                                bloc: context.read<ListChatCubit>(),
                                 index,
                                 message,
                                 isShowTime: true,

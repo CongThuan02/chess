@@ -30,6 +30,13 @@ dependencies:
   rflutter_alert: ^2.0.7
   text_area: ^0.0.3
 
+
+  euni_core_ui:
+    git:
+
+      url: git@github.com:ZM-soft/eUni-core-ui.git
+      ref: main
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

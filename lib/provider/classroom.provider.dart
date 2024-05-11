@@ -32,9 +32,13 @@ class ClassroomProvider {
           ]
         }
       };
-      var url = "https://daotaodaihoc.humg.edu.vn/api/sch/w-locdssinhvientheotohoc";
+      var url = "https://my-api.humg.edu.vn/api/sch/w-locdssinhvientheotohoc";
 
-      var response = await http.post(Uri.parse(url.toString()), headers: headers, body: json.encode(body));
+      var response = await http.post(
+        Uri.parse(url.toString()),
+        headers: headers,
+        body: json.encode(body),
+      );
 
       if (response.statusCode == 200) {
         var bodyConvert = jsonDecode(response.body);
@@ -59,7 +63,7 @@ class ClassroomProvider {
       var token = prefs.getString("accessToken");
       var headers = {"Content-Type": "application/x-www-form-urlencoded", "Authorization": "Bearer $token"};
       var data = {'hoc_ky': '$hocKy', 'loai_doi_tuong': '$loaidoiTuong'};
-      var url = Uri.parse("https://daotaodaihoc.humg.edu.vn/api/sch/w-locdstkbhockytheodoituong");
+      var url = Uri.parse("https://my-api.humg.edu.vn/api/sch/w-locdstkbhockytheodoituong");
       var response = await http.post(Uri.parse(url.toString()), headers: headers, body: data);
       if (response.statusCode == 200) {
         var bodyConvert = jsonDecode(response.body);
@@ -75,5 +79,4 @@ class ClassroomProvider {
     }
     return listDataGet;
   }
-
 }

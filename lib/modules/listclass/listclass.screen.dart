@@ -56,92 +56,98 @@ class _ListClassScreenState extends State<ListClassScreen> {
           create: (context) => ListLopHocCubit()..getListLopHocState(),
           child: BlocBuilder<ListLopHocCubit, ListLopHocState>(
             builder: (context, state) {
-              return state.isLoading == false
-                  ? Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        children: [
-                          if (state.listClass != null) ...[
-                            Expanded(
-                              child: AnimationList(
-                                  children: state.listClass!.map((item) {
-                                return Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  margin: const EdgeInsets.only(bottom: 15),
-                                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(width: 1, color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(20),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: const Color.fromARGB(255, 79, 79, 79).withOpacity(0.5),
-                                        blurRadius: 8,
-                                        offset: const Offset(3, 3),
-                                      ),
-                                    ],
-                                  ),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      SharedPreferences prefs = await SharedPreferences.getInstance();
-                                      String? idUser = prefs.getString("id");
-                                      Navigator.push<void>(
-                                        context,
-                                        MaterialPageRoute<void>(
-                                          builder: (BuildContext context) => ClassRoomScreen(
-                                            classModel: item,
-                                            idUser: idUser ?? "",
-                                            isTeacher: widget.isTeacher,
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    state.isLoading == false
+                        ? Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height,
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              children: [
+                                if (state.listClass != null) ...[
+                                  Expanded(
+                                    child: AnimationList(
+                                        children: state.listClass!.map((item) {
+                                      return Container(
+                                        width: MediaQuery.of(context).size.width,
+                                        margin: const EdgeInsets.only(bottom: 15),
+                                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border.all(width: 1, color: Colors.grey),
+                                          borderRadius: BorderRadius.circular(20),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: const Color.fromARGB(255, 79, 79, 79).withOpacity(0.5),
+                                              blurRadius: 8,
+                                              offset: const Offset(3, 3),
+                                            ),
+                                          ],
+                                        ),
+                                        child: InkWell(
+                                          onTap: () async {
+                                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                                            String? idUser = prefs.getString("id");
+                                            Navigator.push<void>(
+                                              context,
+                                              MaterialPageRoute<void>(
+                                                builder: (BuildContext context) => ClassRoomScreen(
+                                                  classModel: item,
+                                                  idUser: idUser ?? "",
+                                                  isTeacher: widget.isTeacher,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                      child: Text(
+                                                    "${item.tenMon ?? ""}",
+                                                    style: const TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500),
+                                                    overflow: TextOverflow.clip,
+                                                  ))
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                      child: Text(
+                                                    "Tên giảng viên: ${item.gv ?? ""}",
+                                                    style: const TextStyle(fontSize: 17, color: Colors.black, fontWeight: FontWeight.w400),
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ))
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                      child: Text(
+                                                    "Phòng học: ${item.phong ?? ""}",
+                                                    style: const TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.w400),
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ))
+                                                ],
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       );
-                                    },
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                                child: Text(
-                                              "Tên môn học: ${item.tenMon ?? ""}",
-                                              style: const TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500),
-                                              overflow: TextOverflow.clip,
-                                            ))
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                                child: Text(
-                                              "Tên giảng viên: ${item.gv ?? ""}",
-                                              style: const TextStyle(fontSize: 17, color: Colors.black, fontWeight: FontWeight.w400),
-                                              overflow: TextOverflow.ellipsis,
-                                            ))
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                                child: Text(
-                                              "Phòng học: ${item.phong ?? ""}",
-                                              style: const TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.w400),
-                                              overflow: TextOverflow.ellipsis,
-                                            ))
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+                                    }).toList()),
                                   ),
-                                );
-                              }).toList()),
+                                ]
+                              ],
                             ),
-                          ]
-                        ],
-                      ),
-                    )
-                  : Container();
+                          )
+                        : Container()
+                  ],
+                ),
+              );
             },
           ),
         ),

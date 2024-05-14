@@ -11,7 +11,7 @@ class ListChatCubit extends Cubit<ListLoadState<MessageModel>> {
   final ScrollController scrollController = ScrollController();
   final ClassModel classModel;
   bool isFirst = true;
-  late StreamSubscription<MessageModel> _streamMessage;
+  StreamSubscription<MessageModel>? _streamMessage;
 
   ListChatCubit({
     required this.classModel,
@@ -52,11 +52,9 @@ class ListChatCubit extends Cubit<ListLoadState<MessageModel>> {
     emit(state.copyWith(list: list, status: ListLoadStatus.success));
   }
 
-
-
   @override
   Future<void> close() async {
-    _streamMessage.cancel();
+    _streamMessage?.cancel();
     return super.close();
   }
 

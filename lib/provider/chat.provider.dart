@@ -32,6 +32,7 @@ class ChatProvider {
             listData.add(item);
           }
         }
+        print("object");
       }
     } catch (e) {
       print("Loi $e");
@@ -114,7 +115,12 @@ class ChatProvider {
         if (isClass) {
           await _groupCollection.doc(idClassroom.toString()).collection('message').doc(idMessDB.toString()).set(data.toMapClass());
         } else {
-          await FirebaseFirestore.instance.collection('group').doc(idGroup.toString()).collection('message').doc(idMessDB.toString()).set(data.toMapGroup());
+          await FirebaseFirestore.instance
+              .collection('group')
+              .doc(idGroup.toString())
+              .collection('message')
+              .doc(idMessDB.toString())
+              .set(data.toMapGroup());
         }
       } else {
         var idMess = const Uuid().v4();
@@ -157,7 +163,12 @@ class ChatProvider {
         if (isClass) {
           await _groupCollection.doc(idClassroom.toString()).collection('message').doc(idMessDB.toString()).set(data.toMapClass());
         } else {
-          await FirebaseFirestore.instance.collection('group').doc(idGroup.toString()).collection('message').doc(idMessDB.toString()).set(data.toMapGroup());
+          await FirebaseFirestore.instance
+              .collection('group')
+              .doc(idGroup.toString())
+              .collection('message')
+              .doc(idMessDB.toString())
+              .set(data.toMapGroup());
         }
       } else {
         var idMess = const Uuid().v4();
@@ -200,7 +211,12 @@ class ChatProvider {
         if (isClass) {
           await _groupCollection.doc(idClassroom.toString()).collection('message').doc(idMessDB.toString()).set(data.toMapClass());
         } else {
-          await FirebaseFirestore.instance.collection('group').doc(idGroup.toString()).collection('message').doc(idMessDB.toString()).set(data.toMapGroup());
+          await FirebaseFirestore.instance
+              .collection('group')
+              .doc(idGroup.toString())
+              .collection('message')
+              .doc(idMessDB.toString())
+              .set(data.toMapGroup());
         }
       } else {
         var idMess = const Uuid().v4();
@@ -243,7 +259,8 @@ class ChatProvider {
 
   void editMess(MessageModel messageModel, bool isClass) async {
     var url = "$backendURL/api/message/put/${messageModel.id}";
-    await http.put(Uri.parse(url.toString()), headers: {'Content-type': 'application/json'}, body: (isClass) ? messageModel.toJsonClass() : messageModel.toJsonGroup());
+    await http.put(Uri.parse(url.toString()),
+        headers: {'Content-type': 'application/json'}, body: (isClass) ? messageModel.toJsonClass() : messageModel.toJsonGroup());
   }
 }
 

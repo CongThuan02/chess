@@ -5,6 +5,7 @@ import 'package:fe/modules/login/ui/login.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../app/constant/configLoading.dart';
 
 import 'cubit/list_lop_hoc_cubit.dart';
 
@@ -22,6 +23,8 @@ class _ListClassScreenState extends State<ListClassScreen> {
   void initState() {
     super.initState();
   }
+
+  String? namHoc;
 
   @override
   Widget build(BuildContext context) {
@@ -48,103 +51,220 @@ class _ListClassScreenState extends State<ListClassScreen> {
           ),
           centerTitle: true,
           title: const Text(
-            "Dánh sách môn học",
+            "Danh sách học phần",
             style: TextStyle(color: Colors.white),
           ),
         ),
-        body: BlocProvider(
+        body: BlocProvider<ListLopHocCubit>(
           create: (context) => ListLopHocCubit()..getListLopHocState(),
           child: BlocBuilder<ListLopHocCubit, ListLopHocState>(
-            builder: (context, state) {
+            builder: (contextState, state) {
               return SingleChildScrollView(
                 child: Column(
                   children: [
-                    state.isLoading == false
-                        ? Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height,
-                            padding: const EdgeInsets.all(20),
-                            child: Column(
-                              children: [
-                                if (state.listClass != null) ...[
-                                  Expanded(
-                                    child: AnimationList(
-                                        children: state.listClass!.map((item) {
-                                      return Container(
-                                        width: MediaQuery.of(context).size.width,
-                                        margin: const EdgeInsets.only(bottom: 15),
-                                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          border: Border.all(width: 1, color: Colors.grey),
-                                          borderRadius: BorderRadius.circular(20),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: const Color.fromARGB(255, 79, 79, 79).withOpacity(0.5),
-                                              blurRadius: 8,
-                                              offset: const Offset(3, 3),
-                                            ),
-                                          ],
+                    if (state.isLoading == false) ...[
+                      Center(
+                        child: () {
+                          EasyLoadingCustom.instance.dismiss();
+                        }(),
+                      ),
+                      const Text("Chọn học kỳ"),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {
+                            showModalBottomSheet(
+                              isDismissible: true,
+                              enableDrag: true,
+                              context: context,
+                              builder: (BuildContext contexts) {
+                                return Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  color: Colors.white,
+                                  child: Column(
+                                    children: [
+                                      AppBar(
+                                        leading: IconButton(
+                                          icon: const Icon(Icons.close),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
                                         ),
-                                        child: InkWell(
-                                          onTap: () async {
-                                            SharedPreferences prefs = await SharedPreferences.getInstance();
-                                            String? idUser = prefs.getString("id");
-                                            Navigator.push<void>(
-                                              context,
-                                              MaterialPageRoute<void>(
-                                                builder: (BuildContext context) => ClassRoomScreen(
-                                                  classModel: item,
-                                                  idUser: idUser ?? "",
-                                                  isTeacher: widget.isTeacher,
+                                        backgroundColor: Colors.transparent,
+                                        title: const Text("Chọn năm học"),
+                                      ),
+                                      SizedBox(
+                                        height: MediaQuery.of(context).size.height * 0.45,
+                                        child: ListView.builder(
+                                          itemCount: state.namHoc?.length,
+                                          itemBuilder: (context, i) {
+                                            return Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: InkWell(
+                                                onTap: () {
+                                                  contextState.read<ListLopHocCubit>().getListLopHocState(nameHoc: state.namHoc![i].hoc_ky!);
+                                                  setState(() {
+                                                    namHoc = state.namHoc![i].ten_hoc_ky;
+                                                  });
+
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Text(
+                                                  "${state.namHoc?[i].ten_hoc_ky}",
+                                                  style: const TextStyle(
+                                                    fontSize: 16,
+                                                  ),
                                                 ),
                                               ),
                                             );
                                           },
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: FormField(
+                            builder: (FormFieldState<dynamic> field) {
+                              return InputDecorator(
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                child: Text("${namHoc ?? state.namHoc?[0].ten_hoc_ky}"),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height,
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          children: [
+                            if (state.listClass != null) ...[
+                              Expanded(
+                                child: AnimationList(
+                                    children: state.listClass!.map((item) {
+                                  return Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    margin: const EdgeInsets.only(bottom: 15),
+                                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(width: 1, color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(20),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: const Color.fromARGB(255, 79, 79, 79).withOpacity(0.5),
+                                          blurRadius: 8,
+                                          offset: const Offset(3, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: InkWell(
+                                      onTap: () async {
+                                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                                        String? idUser = prefs.getString("id");
+                                        Navigator.push<void>(
+                                          context,
+                                          MaterialPageRoute<void>(
+                                            builder: (BuildContext context) => ClassRoomScreen(
+                                              classModel: item,
+                                              idUser: idUser ?? "",
+                                              isTeacher: widget.isTeacher,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            child: () {
+                                              EasyLoadingCustom.instance.dismiss();
+                                            }(),
+                                          ),
+                                          Row(
                                             children: [
-                                              Row(
+                                              Expanded(
+                                                  child: Text(
+                                                "${item.tenMon} - ${item.nhomTo}",
+                                                style: const TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500),
+                                                overflow: TextOverflow.clip,
+                                              ))
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
-                                                  Expanded(
-                                                      child: Text(
-                                                    "${item.tenMon ?? ""}",
-                                                    style: const TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500),
-                                                    overflow: TextOverflow.clip,
-                                                  ))
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Expanded(
-                                                      child: Text(
+                                                  Text(
                                                     "Tên giảng viên: ${item.gv ?? ""}",
                                                     style: const TextStyle(fontSize: 17, color: Colors.black, fontWeight: FontWeight.w400),
                                                     overflow: TextOverflow.ellipsis,
-                                                  ))
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () async {
+                                                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                      String? idUser = prefs.getString("id");
+                                                      Navigator.push<void>(
+                                                        context,
+                                                        MaterialPageRoute<void>(
+                                                          builder: (BuildContext context) => ClassRoomScreen(
+                                                            classModel: item,
+                                                            idUser: idUser ?? "",
+                                                            isTeacher: widget.isTeacher,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: Text("Vào lớp"),
+                                                  )
                                                 ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Expanded(
-                                                      child: Text(
-                                                    "Phòng học: ${item.phong ?? ""}",
-                                                    style: const TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.w400),
-                                                    overflow: TextOverflow.ellipsis,
-                                                  ))
-                                                ],
-                                              ),
+                                              ))
                                             ],
                                           ),
-                                        ),
-                                      );
-                                    }).toList()),
-                                  ),
-                                ]
-                              ],
-                            ),
-                          )
-                        : Container()
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Text(
+                                                "Phòng học: ${item.phong ?? ""}",
+                                                style: const TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.w400),
+                                                overflow: TextOverflow.ellipsis,
+                                              ))
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }).toList()),
+                              ),
+                            ],
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.2,
+                            )
+                          ],
+                        ),
+                      )
+                    ] else ...[
+                      Container(
+                        child: () {
+                          EasyLoadingCustom.instance.loadingWithBackgroud("loading...");
+                        }(),
+                      )
+                    ],
                   ],
                 ),
               );

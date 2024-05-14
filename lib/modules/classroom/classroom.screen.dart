@@ -4,7 +4,6 @@ import 'package:fe/modules/classroom/assignment/assignment_student/assignment.st
 import 'package:fe/modules/classroom/assignment/assignment_teacher/assignment.teacher.cubit.dart';
 import 'package:fe/modules/classroom/chat/chat.cubit.dart';
 import 'package:fe/modules/classroom/chat/chat.page.dart';
-import 'package:fe/modules/classroom/post/post.page.dart';
 import 'package:fe/modules/classroom/quiz/quiz_student/quiz.student.cubit.dart';
 import 'package:fe/modules/classroom/quiz/quiz_student/quiz.student.page.dart';
 import 'package:fe/modules/classroom/quiz/quiz_teacher/quiz.teacher.cubit.dart';
@@ -17,6 +16,7 @@ import 'assignment/assignment_teacher/assignment.teacher.page.dart';
 import 'chat/list.chat.cubit.dart';
 import 'group/group.cubit.dart';
 import 'group/group.page.dart';
+import 'home/post.page.dart';
 import 'list_sinhvien/list.sinh.vien.screen.dart';
 import 'vote/vote.page.dart';
 
@@ -108,7 +108,7 @@ class _ClassRoomScreenState extends State<ClassRoomScreen> {
                           color: Colors.white,
                         ),
                         child: const Text(
-                          "Post",
+                          "Home",
                           style: TextStyle(fontSize: 12),
                         )),
                   ),

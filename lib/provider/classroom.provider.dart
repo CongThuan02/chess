@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_string_interpolations, unnecessary_brace_in_string_interps
 
 import 'dart:convert';
+import 'package:fe/model/namhoc.model.dart';
 import 'package:fe/model/sinh.vien.model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -70,6 +71,30 @@ class ClassroomProvider {
         if (bodyConvert['result'] == true) {
           for (var element in bodyConvert['data']['ds_nhom_to']) {
             ClassModel item = ClassModel.fromMap(element);
+            listDataGet.add(item);
+          }
+        }
+      }
+    } catch (e) {
+      print("Loi $e");
+    }
+    return listDataGet;
+  }
+
+  static Future<List<NamHoc>> getListNamHoc() async {
+    List<NamHoc> listDataGet = [];
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("accessToken");
+      var headers = {"Content-Type": "application/x-www-form-urlencoded", "Authorization": "Bearer $token"};
+      var url = Uri.parse("https://my-api.humg.edu.vn/api/sch/w-locdshockytkbuser");
+      var response = await http.post(Uri.parse(url.toString()), headers: headers, body: {});
+      print(response);
+      if (response.statusCode == 200) {
+        var bodyConvert = jsonDecode(response.body);
+        if (bodyConvert['result'] == true) {
+          for (var element in bodyConvert['data']['ds_hoc_ky']) {
+            NamHoc item = NamHoc.fromMap(element);
             listDataGet.add(item);
           }
         }

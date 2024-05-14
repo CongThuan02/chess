@@ -74,10 +74,10 @@ class ChatPage extends StatelessWidget {
                 }),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Row(
               children: [
-                SizedBox(width: 5),
+                const SizedBox(width: 5),
                 InkWell(
                     onTap: () async {
                       context.read<ChatCubit>().chatFocus.unfocus();
@@ -86,12 +86,12 @@ class ChatPage extends StatelessWidget {
                         context.read<ChatCubit>().sendFile(fileName);
                       }
                     },
-                    child: Icon(
+                    child: const Icon(
                       Icons.attach_file,
                       size: 30,
-                      color: const Color.fromARGB(255, 21, 123, 207),
+                      color: Color.fromARGB(255, 21, 123, 207),
                     )),
-                SizedBox(width: 5),
+                const SizedBox(width: 5),
                 InkWell(
                     onTap: () async {
                       context.read<ChatCubit>().chatFocus.unfocus();
@@ -100,12 +100,12 @@ class ChatPage extends StatelessWidget {
                         context.read<ChatCubit>().sendImage(fileName);
                       }
                     },
-                    child: Icon(
+                    child: const Icon(
                       Icons.photo_library,
                       size: 30,
-                      color: const Color.fromARGB(255, 21, 123, 207),
+                      color: Color.fromARGB(255, 21, 123, 207),
                     )),
-                SizedBox(width: 5),
+                const SizedBox(width: 5),
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), border: Border.all(color: Colors.grey, width: 2)),
@@ -114,15 +114,15 @@ class ChatPage extends StatelessWidget {
                       onChanged: (value) {},
                       enabled: true,
                       controller: context.read<ChatCubit>().controllerChat,
-                      style: TextStyle(),
+                      style: const TextStyle(),
                       onTap: () {},
                       keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         fillColor: Colors.white,
                         hintText: "Aa",
-                        hintStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: const Color(0xFFBBBBBB)),
-                        suffixIconConstraints: const BoxConstraints.expand(width: 30, height: 20),
-                        contentPadding: const EdgeInsets.only(left: 10, right: 8, top: 8, bottom: 8),
+                        hintStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFFBBBBBB)),
+                        suffixIconConstraints: BoxConstraints.expand(width: 30, height: 20),
+                        contentPadding: EdgeInsets.only(left: 10, right: 8, top: 8, bottom: 8),
                         isCollapsed: true,
                         border: InputBorder.none,
                       ),
@@ -130,7 +130,7 @@ class ChatPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: 5),
+                const SizedBox(width: 5),
                 Container(
                   width: 50,
                   height: 50,
@@ -142,15 +142,15 @@ class ChatPage extends StatelessWidget {
                     onTap: () {
                       context.read<ChatCubit>().sendText();
                     },
-                    child: Center(
+                    child: const Center(
                       child: Icon(Icons.send, color: Colors.white),
                     ),
                   ),
                 ),
-                SizedBox(width: 5),
+                const SizedBox(width: 5),
               ],
             ),
-            SizedBox(height: 10)
+            const SizedBox(height: 10)
           ],
         ),
       ),

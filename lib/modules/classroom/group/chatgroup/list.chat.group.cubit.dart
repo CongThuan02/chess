@@ -11,7 +11,7 @@ class ListChatGroupCubit extends Cubit<ListLoadState<MessageModel>> {
   final ScrollController scrollController = ScrollController();
   final GroupModel groupModel;
   bool isFirst = true;
-  late StreamSubscription<MessageModel> _streamMessage;
+  StreamSubscription<MessageModel>? _streamMessage;
 
   ListChatGroupCubit({
     required this.groupModel,
@@ -53,7 +53,7 @@ class ListChatGroupCubit extends Cubit<ListLoadState<MessageModel>> {
 
   @override
   Future<void> close() async {
-    _streamMessage.cancel();
+    _streamMessage!.cancel();
     return super.close();
   }
 }
